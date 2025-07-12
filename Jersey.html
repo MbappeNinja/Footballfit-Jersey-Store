@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FootballFit | Premium Jersey Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <style id="app-style">
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap');
+    
+    :root {
+      --primary-color: #6a6f7e;
+      --secondary-color: #ff6a3d;
+      --accent-color: #00c2cb;
+      --light-color: #f4f7f5;
+      --dark-color: #0f172a;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--light-color);
+      background-image: url('https://cdn.pixabay.com/photo/2013/07/13/12/15/grass-159218_1280.png');
+      background-repeat: repeat;
+      background-size: 300px;
+      background-blend-mode: overlay;
+      color: var(--dark-color);
+      min-height: 100vh;
+    }
+    
+    h1, h2, h3, .team-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .header-bg {
+      background: linear-gradient(to right, rgba(26, 34, 56, 0.9), rgba(15, 23, 42, 0.95));
+    }
+    
+    .nav-link {
+      position: relative;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--secondary-color);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+    
+    .hero-section {
+      background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .jersey-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .jersey-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .team-badge {
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    
+    .player-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+    
+    .availability-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    
+    .size-btn.active {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+    
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s;
+    }
+    
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+    
+    .color-swatch.active {
+      border: 2px solid var(--dark-color);
+    }
+    
+    .btn-primary {
+      background-color: var(--secondary-color);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: #ff5824;
+      transform: translateY(-2px);
+    }
+    
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal-content {
+      background-color: white;
+      border-radius: 0.5rem;
+      max-width: 900px;
+      width: 95%;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .modal-overlay.show {
+      display: flex;
+    }
+    
+    .modal-overlay.show .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--secondary-color);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid var(--secondary-color);
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .filter-panel {
+      background: linear-gradient(to right, rgba(26, 34, 56, 0.95), rgba(15, 23, 42, 0.9));
+      border-radius: 0.5rem;
+    }
+    
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+    }
+    
+    .quantity-btn {
+      background-color: #e2e8f0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .quantity-btn:hover {
+      background-color: #cbd5e1;
+    }
+    
+    .quantity-input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      font-weight: 600;
+    }
+    
+    #checkout-form input,
+    #checkout-form select {
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 100%;
+    }
+    
+    #checkout-form label {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+    
+    @media (max-width: 768px) {
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        height: 100vh;
+        background-color: var(--primary-color);
+        z-index: 40;
+        transition: left 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 1rem;
+      }
+      
+      .mobile-menu.show {
+        left: 0;
+      }
+      
+      .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 39;
+        display: none;
+      }
+      
+      .menu-overlay.show {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen" x-data="{ 
+  currentView: 'home',
+  mobileMenuOpen: false,
+  cart: [],
+  jerseyDetail: null,
+  selectedSize: null,
+  selectedColor: null,
+  isDetailOpen: false,
+  isCheckoutOpen: false,
+  isOrderConfirmed: false,
+  orderNumber: '',
+  getCartCount() {
+    return this.cart.reduce((sum, item) => sum + item.quantity, 0)
+  },
+  getCartTotal() {
+    return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)
+  }
+}">
+
+  <!-- Header -->
+  <header class="header-bg sticky top-0 z-30 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-2">
+          <a href="javascript:void(0)" @click="currentView = 'home'" class="flex items-center">
+            <i class="fas fa-futbol text-3xl text-secondary-color mr-2" style="color: #ff6a3d;"></i>
+            <h1 class="text-xl md:text-2xl font-bold text-white">FootballFit</h1>
+          </a>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="javascript:void(0)" @click="currentView = 'home'" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'home'}">Home</a>
+          <a href="javascript:void(0)" @click="currentView = 'shop'" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'shop'}">Shop</a>
+          <a href="javascript:void(0)" @click="currentView = 'cart'" class="nav-link text-white hover:text-gray-300 relative" :class="{'active': currentView === 'cart'}">
+            Cart
+            <span x-show="getCartCount() > 0" class="cart-badge">
+              <span x-text="getCartCount()"></span>
+            </span>
+          </a>
+          <a href="javascript:void(0)" @click="currentView = 'contact'" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'contact'}">Contact</a>
+        </nav>
+        
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden items-center space-x-4">
+          <a href="javascript:void(0)" @click="currentView = 'cart'" class="text-white hover:text-gray-300 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span x-show="getCartCount() > 0" class="cart-badge">
+              <span x-text="getCartCount()"></span>
+            </span>
+          </a>
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Mobile Menu Overlay -->
+  <div @click="mobileMenuOpen = false" class="menu-overlay" :class="{'show': mobileMenuOpen}"></div>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" :class="{'show': mobileMenuOpen}">
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-futbol text-2xl text-secondary-color" style="color: #ff6a3d;"></i>
+        <h1 class="text-xl font-bold text-white">FootballFit</h1>
+      </div>
+      <button @click="mobileMenuOpen = false" class="text-white focus:outline-none">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <nav class="flex flex-col space-y-6">
+      <a href="javascript:void(0)" @click="currentView = 'home'; mobileMenuOpen = false" class="text-white text-lg">Home</a>
+      <a href="javascript:void(0)" @click="currentView = 'shop'; mobileMenuOpen = false" class="text-white text-lg">Shop</a>
+      <a href="javascript:void(0)" @click="currentView = 'cart'; mobileMenuOpen = false" class="text-white text-lg">Cart</a>
+      <a href="javascript:void(0)" @click="currentView = 'contact'; mobileMenuOpen = false" class="text-white text-lg">Contact</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <!-- Home View -->
+    <div x-show="currentView === 'home'" class="mb-10">
+      <!-- Hero Section -->
+      <section class="hero-section py-32 mb-12 flex items-center justify-center">
+        <div class="container mx-auto px-4 text-center">
+          <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6">Premium Football Jerseys</h1>
+          <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">Gear up with authentic team jerseys worn by the world's greatest players. Made for true fans.</p>
+          <button @click="currentView = 'shop'" class="btn-primary text-lg font-semibold px-8 py-3 rounded-full">
+            Shop Now
+          </button>
+        </div>
+      </section>
+      
+      <!-- Featured Categories -->
+      <section class="container mx-auto px-4 mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-center">Featured Categories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-56 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png')"></div>
+            <div class="p-6 text-center">
+              <h3 class="text-xl font-bold mb-3">National Teams</h3>
+              <p class="text-gray-600 mb-4">Rep your country with official national team jerseys</p>
+              <button @click="currentView = 'shop'" class="btn-primary px-6 py-2 rounded-full">View Collection</button>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-56 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg')"></div>
+            <div class="p-6 text-center">
+              <h3 class="text-xl font-bold mb-3">Club Teams</h3>
+              <p class="text-gray-600 mb-4">Support your favorite clubs with authentic jerseys</p>
+              <button @click="currentView = 'shop'" class="btn-primary px-6 py-2 rounded-full">View Collection</button>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-56 bg-cover bg-center" style="background-image: url('https://cdn.pixabay.com/photo/2018/06/12/20/17/football-3471402_1280.jpg')"></div>
+            <div class="p-6 text-center">
+              <h3 class="text-xl font-bold mb-3">Limited Editions</h3>
+              <p class="text-gray-600 mb-4">Exclusive designs and special edition jerseys</p>
+              <button @click="currentView = 'shop'" class="btn-primary px-6 py-2 rounded-full">View Collection</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Featured Products -->
+      <section class="container mx-auto px-4 mb-16">
+        <h2 class="text-3xl font-bold mb-8 text-center">Featured Jerseys</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg" alt="Jersey" class="w-full h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/25/football-310624_1280.png')"></div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-lg font-semibold">Team Alpha</h3>
+                <span class="player-number">10</span>
+              </div>
+              <p class="text-gray-600 mb-3">Johnson Home Jersey</p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-lg">$89.99</span>
+                <div class="flex items-center">
+                  <span class="availability-dot bg-green-500 mr-2"></span>
+                  <span class="text-sm">In Stock</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg" alt="Jersey" class="w-full h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/12/14/07/football-147854_1280.png')"></div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-lg font-semibold">FC United</h3>
+                <span class="player-number">7</span>
+              </div>
+              <p class="text-gray-600 mb-3">Martinez Away Jersey</p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-lg">$94.99</span>
+                <div class="flex items-center">
+                  <span class="availability-dot bg-green-500 mr-2"></span>
+                  <span class="text-sm">In Stock</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg" alt="Jersey" class="w-full h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2012/04/05/01/24/soccer-25789_1280.png')"></div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-lg font-semibold">City Stars</h3>
+                <span class="player-number">9</span>
+              </div>
+              <p class="text-gray-600 mb-3">Williams Home Jersey</p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-lg">$79.99</span>
+                <div class="flex items-center">
+                  <span class="availability-dot bg-yellow-500 mr-2"></span>
+                  <span class="text-sm">Low Stock</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="relative">
+              <img src="https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg" alt="Jersey" class="w-full h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_1280.png')"></div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-lg font-semibold">National FC</h3>
+                <span class="player-number">21</span>
+              </div>
+              <p class="text-gray-600 mb-3">Rodriguez Third Jersey</p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-lg">$99.99</span>
+                <div class="flex items-center">
+                  <span class="availability-dot bg-red-500 mr-2"></span>
+                  <span class="text-sm">Pre-Order</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-8">
+          <button @click="currentView = 'shop'" class="btn-primary text-lg font-semibold px-8 py-3 rounded-full">
+            View All Jerseys
+          </button>
+        </div>
+      </section>
+      
+      <!-- Testimonials -->
+      <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold mb-12 text-center">What Our Customers Say</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="text-gray-600 mb-4">"The quality of these jerseys is outstanding! Perfect fit and fast shipping. Will definitely order again."</p>
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div>
+                  <h4 class="font-semibold">Michael R.</h4>
+                  <p class="text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="text-gray-600 mb-4">"I bought a limited edition jersey and couldn't be happier. Authentic quality and the embroidery is perfect!"</p>
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div>
+                  <h4 class="font-semibold">Jessica T.</h4>
+                  <p class="text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <p class="text-gray-600 mb-4">"Great selection of jerseys and excellent customer service. Had a question and they responded very quickly."</p>
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div>
+                  <h4 class="font-semibold">David L.</h4>
+                  <p class="text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Newsletter -->
+      <section class="py-16 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
+        <div class="container mx-auto px-4 text-center">
+          <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p class="text-lg mb-8 max-w-xl mx-auto">Subscribe to our newsletter for exclusive deals, new arrivals, and updates on limited edition releases.</p>
+          <form class="flex flex-col md:flex-row justify-center max-w-lg mx-auto">
+            <input type="email" placeholder="Your email address" class="px-5 py-3 rounded-l-lg md:w-2/3 w-full text-gray-800 focus:outline-none">
+            <button type="submit" class="bg-secondary-color hover:bg-secondary-dark px-5 py-3 rounded-r-lg font-semibold">Subscribe</button>
+          </form>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Shop View -->
+    <div x-show="currentView === 'shop'" class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-8 text-center">Shop Jerseys</h1>
+      
+      <!-- Filter Panel -->
+      <div class="filter-panel p-4 md:p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div class="md:col-span-1">
+            <label class="text-white text-sm block mb-1">Team</label>
+            <select class="w-full p-2 rounded">
+              <option value="">All Teams</option>
+              <option>Team Alpha</option>
+              <option>FC United</option>
+              <option>City Stars</option>
+              <option>National FC</option>
+              <option>Athletic Club</option>
+            </select>
+          </div>
+          <div class="md:col-span-1">
+            <label class="text-white text-sm block mb-1">Player</label>
+            <select class="w-full p-2 rounded">
+              <option value="">All Players</option>
+              <option>Johnson</option>
+              <option>Martinez</option>
+              <option>Williams</option>
+              <option>Rodriguez</option>
+              <option>Smith</option>
+            </select>
+          </div>
+          <div class="md:col-span-1">
+            <label class="text-white text-sm block mb-1">Size</label>
+            <select class="w-full p-2 rounded">
+              <option value="">All Sizes</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+              <option>XXL</option>
+            </select>
+          </div>
+          <div class="md:col-span-1">
+            <label class="text-white text-sm block mb-1">Color</label>
+            <select class="w-full p-2 rounded">
+              <option value="">All Colors</option>
+              <option>Red</option>
+              <option>Blue</option>
+              <option>White</option>
+              <option>Black</option>
+              <option>Green</option>
+            </select>
+          </div>
+          <div class="md:col-span-1">
+            <label class="text-white text-sm block mb-1">Search</label>
+            <input type="text" placeholder="Search..." class="w-full p-2 rounded">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Products Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Jersey 1 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 1,
+            name: 'Team Alpha Home Jersey',
+            player: 'Johnson',
+            number: 10,
+            price: 89.99,
+            description: 'Official home jersey of Team Alpha for the 2024/25 season. Features moisture-wicking fabric and embroidered team crest. Made from 100% recycled polyester.',
+            sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+            colors: ['red', 'white', 'blue'],
+            images: [
+              'https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg',
+              'https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg',
+              'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2014/04/03/10/25/football-310624_1280.png',
+            availability: 'In Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg" alt="Team Alpha Home Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/25/football-310624_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">Team Alpha</h3>
+              <span class="player-number">10</span>
+            </div>
+            <p class="text-gray-600 mb-3">Johnson Home Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$89.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-green-500 mr-2"></span>
+                <span class="text-sm">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 2 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 2,
+            name: 'FC United Away Jersey',
+            player: 'Martinez',
+            number: 7,
+            price: 94.99,
+            description: 'Official away jersey of FC United for the 2024/25 season. Features lightweight design for maximum comfort and performance. Includes authentic team badges.',
+            sizes: ['S', 'M', 'L', 'XL'],
+            colors: ['blue', 'navy', 'white'],
+            images: [
+              'https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg',
+              'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2013/07/12/14/07/football-147854_1280.png',
+            availability: 'In Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg" alt="FC United Away Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/12/14/07/football-147854_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">FC United</h3>
+              <span class="player-number">7</span>
+            </div>
+            <p class="text-gray-600 mb-3">Martinez Away Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$94.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-green-500 mr-2"></span>
+                <span class="text-sm">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 3 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 3,
+            name: 'City Stars Home Jersey',
+            player: 'Williams',
+            number: 9,
+            price: 79.99,
+            description: 'Official home jersey of City Stars for the 2024/25 season. Sleek design with breathable fabric and team emblem embroidered on the chest.',
+            sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+            colors: ['green', 'yellow', 'white'],
+            images: [
+              'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg',
+              'https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2012/04/05/01/24/soccer-25789_1280.png',
+            availability: 'Low Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg" alt="City Stars Home Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2012/04/05/01/24/soccer-25789_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">City Stars</h3>
+              <span class="player-number">9</span>
+            </div>
+            <p class="text-gray-600 mb-3">Williams Home Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$79.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-yellow-500 mr-2"></span>
+                <span class="text-sm">Low Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 4 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 4,
+            name: 'National FC Third Jersey',
+            player: 'Rodriguez',
+            number: 21,
+            price: 99.99,
+            description: 'Limited edition third jersey of National FC for the 2024/25 season. Special design with premium fabric and commemorative badge.',
+            sizes: ['S', 'M', 'L', 'XL'],
+            colors: ['black', 'gold', 'red'],
+            images: [
+              'https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg',
+              'https://cdn.pixabay.com/photo/2018/06/12/20/17/football-3471402_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_1280.png',
+            availability: 'Pre-Order'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg" alt="National FC Third Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">National FC</h3>
+              <span class="player-number">21</span>
+            </div>
+            <p class="text-gray-600 mb-3">Rodriguez Third Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$99.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-red-500 mr-2"></span>
+                <span class="text-sm">Pre-Order</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 5 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 5,
+            name: 'Athletic Club Home Jersey',
+            player: 'Smith',
+            number: 14,
+            price: 84.99,
+            description: 'Official home jersey of Athletic Club for the 2024/25 season. Classic design with modern performance fabric and traditional team colors.',
+            sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+            colors: ['red', 'white', 'black'],
+            images: [
+              'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png',
+              'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2013/07/13/12/15/grass-159218_1280.png',
+            availability: 'In Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png" alt="Athletic Club Home Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/13/12/15/grass-159218_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">Athletic Club</h3>
+              <span class="player-number">14</span>
+            </div>
+            <p class="text-gray-600 mb-3">Smith Home Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$84.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-green-500 mr-2"></span>
+                <span class="text-sm">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 6 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 6,
+            name: 'Team Alpha Away Jersey',
+            player: 'Johnson',
+            number: 10,
+            price: 89.99,
+            description: 'Official away jersey of Team Alpha for the 2024/25 season. Bold design with advanced ventilation and team badge.',
+            sizes: ['S', 'M', 'L', 'XL'],
+            colors: ['blue', 'navy', 'white'],
+            images: [
+              'https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg',
+              'https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2014/04/03/10/25/football-310624_1280.png',
+            availability: 'In Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg" alt="Team Alpha Away Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2014/04/03/10/25/football-310624_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">Team Alpha</h3>
+              <span class="player-number">10</span>
+            </div>
+            <p class="text-gray-600 mb-3">Johnson Away Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$89.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-green-500 mr-2"></span>
+                <span class="text-sm">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 7 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 7,
+            name: 'National FC Home Jersey',
+            player: 'Davis',
+            number: 8,
+            price: 94.99,
+            description: 'Official home jersey of National FC for the 2024/25 season. Premium quality with authentic team design and embroidered crest.',
+            sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+            colors: ['red', 'blue', 'white'],
+            images: [
+              'https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg',
+              'https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg',
+              'https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_1280.png',
+            availability: 'In Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg" alt="National FC Home Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/13/10/51/football-157930_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">National FC</h3>
+              <span class="player-number">8</span>
+            </div>
+            <p class="text-gray-600 mb-3">Davis Home Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$94.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-green-500 mr-2"></span>
+                <span class="text-sm">In Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Jersey 8 -->
+        <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden" @click="
+          jerseyDetail = {
+            id: 8,
+            name: 'FC United Third Jersey',
+            player: 'Thompson',
+            number: 11,
+            price: 99.99,
+            description: 'Limited edition third jersey of FC United for the 2024/25 season. Features innovative design with special commemorative details.',
+            sizes: ['S', 'M', 'L', 'XL'],
+            colors: ['black', 'gold', 'white'],
+            images: [
+              'https://cdn.pixabay.com/photo/2018/06/12/20/17/football-3471402_1280.jpg',
+              'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg',
+              'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'
+            ],
+            teamLogo: 'https://cdn.pixabay.com/photo/2013/07/12/14/07/football-147854_1280.png',
+            availability: 'Low Stock'
+          };
+          selectedSize = null;
+          selectedColor = null;
+          isDetailOpen = true;
+        ">
+          <div class="relative">
+            <img src="https://cdn.pixabay.com/photo/2018/06/12/20/17/football-3471402_1280.jpg" alt="FC United Third Jersey" class="w-full h-56 object-cover">
+            <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+              <div class="team-badge" style="background-image: url('https://cdn.pixabay.com/photo/2013/07/12/14/07/football-147854_1280.png')"></div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="team-name text-lg font-semibold">FC United</h3>
+              <span class="player-number">11</span>
+            </div>
+            <p class="text-gray-600 mb-3">Thompson Third Jersey</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">$99.99</span>
+              <div class="flex items-center">
+                <span class="availability-dot bg-yellow-500 mr-2"></span>
+                <span class="text-sm">Low Stock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Cart View -->
+    <div x-show="currentView === 'cart'" class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-8 text-center">Your Cart</h1>
+      
+      <div x-show="cart.length === 0" class="text-center py-16">
+        <i class="fas fa-shopping-cart text-5xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-bold text-gray-500 mb-4">Your cart is empty</h2>
+        <p class="text-gray-500 mb-6">Looks like you haven't added any jerseys to your cart yet.</p>
+        <button @click="currentView = 'shop'" class="btn-primary text-lg font-semibold px-8 py-3 rounded-full">
+          Continue Shopping
+        </button>
+      </div>
+      
+      <div x-show="cart.length > 0" class="bg-white rounded-lg shadow-lg p-6">
+        <!-- Cart Items -->
+        <div class="mb-8">
+          <div class="flex font-bold text-gray-600 border-b pb-4 mb-4 hidden md:flex">
+            <div class="w-2/5">Product</div>
+            <div class="w-1/5 text-center">Price</div>
+            <div class="w-1/5 text-center">Quantity</div>
+            <div class="w-1/5 text-center">Total</div>
+          </div>
+          
+          <template x-for="(item, index) in cart" :key="index">
+            <div class="flex flex-col md:flex-row items-center py-4 border-b">
+              <div class="w-full md:w-2/5 flex items-center mb-4 md:mb-0">
+                <img :src="item.image" :alt="item.name" class="w-16 h-16 object-cover rounded mr-4">
+                <div>
+                  <h3 class="font-semibold" x-text="item.name"></h3>
+                  <div class="text-sm text-gray-500">
+                    <span x-text="`Size: ${item.size}`"></span> | 
+                    <span x-text="`Color: ${item.color.charAt(0).toUpperCase() + item.color.slice(1)}`"></span>
+                  </div>
+                  <button @click="cart.splice(index, 1)" class="text-red-500 text-sm mt-1 md:hidden flex items-center">
+                    <i class="fas fa-trash-alt mr-1"></i> Remove
+                  </button>
+                </div>
+              </div>
+              
+              <div class="w-full md:w-1/5 text-center mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Price:</div>
+                <span x-text="`$${item.price.toFixed(2)}`"></span>
+              </div>
+              
+              <div class="w-full md:w-1/5 text-center mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Quantity:</div>
+                <div class="quantity-selector inline-flex">
+                  <div class="quantity-btn" @click="if(item.quantity > 1) item.quantity--">-</div>
+                  <input type="text" class="quantity-input" x-model.number="item.quantity" min="1">
+                  <div class="quantity-btn" @click="item.quantity++">+</div>
+                </div>
+              </div>
+              
+              <div class="w-full md:w-1/5 text-center font-semibold mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Total:</div>
+                <span x-text="`$${(item.price * item.quantity).toFixed(2)}`"></span>
+              </div>
+              
+              <div class="hidden md:block">
+                <button @click="cart.splice(index, 1)" class="text-red-500">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+        
+        <!-- Cart Summary -->
+        <div class="lg:flex justify-between items-start">
+          <div class="lg:w-1/2 mb-6 lg:mb-0">
+            <h3 class="font-semibold text-lg mb-3">Special Instructions</h3>
+            <textarea class="w-full p-2 border rounded" rows="3" placeholder="Add a note about your order..."></textarea>
+          </div>
+          
+          <div class="lg:w-1/3">
+            <div class="bg-gray-100 p-4 rounded">
+              <h3 class="font-semibold text-lg mb-4">Order Summary</h3>
+              <div class="flex justify-between mb-2">
+                <span>Subtotal</span>
+                <span x-text="`$${getCartTotal()}`"></span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
+              </div>
+              <div class="flex justify-between font-bold text-lg border-t border-gray-300 pt-4 mt-4">
+                <span>Total</span>
+                <span x-text="`$${getCartTotal()}`"></span>
+              </div>
+              
+              <button @click="isCheckoutOpen = true" class="btn-primary w-full text-center py-3 rounded-lg mt-6 font-semibold">
+                Proceed to Checkout
+              </button>
+              
+              <button @click="currentView = 'shop'" class="w-full text-center py-3 text-gray-600 hover:text-gray-900 mt-4">
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contact View -->
+    <div x-show="currentView === 'contact'" class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-8 text-center">Contact Us</h1>
+      
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="md:flex">
+          <div class="md:w-1/2 bg-primary-color p-8 text-white" style="background-color: #1a2238;">
+            <h2 class="text-2xl font-bold mb-6">Get In Touch</h2>
+            <p class="mb-6">Have questions about our products, orders or need assistance? Fill out the form and our team will get back to you shortly.</p>
+            
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2">Store Location</h3>
+              <p>123 Stadium Avenue, Sports City, SC 12345</p>
+            </div>
+            
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2">Phone</h3>
+              <p>(123) 456-7890</p>
+            </div>
+            
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2">Email</h3>
+              <p>support@footballfit.com</p>
+            </div>
+            
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2">Business Hours</h3>
+              <p>Monday-Friday: 9am - 6pm<br>Saturday: 10am - 4pm<br>Sunday: Closed</p>
+            </div>
+            
+            <div class="mt-8">
+              <h3 class="font-semibold mb-3">Follow Us</h3>
+              <div class="flex space-x-4">
+                <a href="javascript:void(0)" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-facebook-f fa-lg"></i>
+                </a>
+                <a href="javascript:void(0)" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-twitter fa-lg"></i>
+                </a>
+                <a href="javascript:void(0)" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-instagram fa-lg"></i>
+                </a>
+                <a href="javascript:void(0)" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-youtube fa-lg"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="md:w-1/2 p-8">
+            <h2 class="text-2xl font-bold mb-6">Send Us a Message</h2>
+            <form>
+              <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
+                <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color">
+              </div>
+              
+              <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color">
+              </div>
+              
+              <div class="mb-4">
+                <label for="subject" class="block text-gray-700 font-semibold mb-2">Subject</label>
+                <input type="text" id="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color">
+              </div>
+              
+              <div class="mb-6">
+                <label for="message" class="block text-gray-700 font-semibold mb-2">Message</label>
+                <textarea id="message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color"></textarea>
+              </div>
+              
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Map Section -->
+      <div class="max-w-4xl mx-auto mt-12">
+        <h2 class="text-2xl font-bold mb-6 text-center">Find Us</h2>
+        <div class="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
+          <div class="text-center">
+            <i class="fas fa-map-marker-alt text-4xl text-secondary-color mb-3" style="color: #ff6a3d;"></i>
+            <p class="text-gray-600">Map placeholder - API integration to be added</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- FAQ Section -->
+      <div class="max-w-4xl mx-auto mt-16">
+        <h2 class="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mb-2">What sizes do you offer?</h3>
+            <p class="text-gray-600">We offer sizes ranging from Small to XXL for most of our jerseys. Please check individual product pages for specific sizing availability.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mb-2">What is your return policy?</h3>
+            <p class="text-gray-600">We accept returns within 30 days of purchase for unworn items with original tags. Please contact our customer service team to initiate a return.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mb-2">How long does shipping take?</h3>
+            <p class="text-gray-600">Standard shipping typically takes 3-5 business days. Express shipping options are available at checkout for faster delivery.</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-semibold mb-2">Are your jerseys authentic?</h3>
+            <p class="text-gray-600">Yes, all our jerseys are authentic licensed products featuring official team logos and designs. We only source from authorized manufacturers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="bg-dark-color text-white py-12 mt-16" style="background-color: #0f172a;">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-futbol text-2xl text-secondary-color mr-2" style="color: #ff6a3d;"></i>
+            <h2 class="text-xl font-bold">FootballFit</h2>
+          </div>
+          <p class="text-gray-400 mb-4">Premium football jerseys for true fans. Authentic quality and official merchandise.</p>
+          <div class="flex space-x-4">
+            <a href="javascript:void(0)" class="text-gray-400 hover:text-secondary-color" style="color: #ff6a3d;">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="javascript:void(0)" class="text-gray-400 hover:text-secondary-color" style="color: #ff6a3d;">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="javascript:void(0)" class="text-gray-400 hover:text-secondary-color" style="color: #ff6a3d;">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="javascript:void(0)" class="text-gray-400 hover:text-secondary-color" style="color: #ff6a3d;">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Shop</h3>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" @click="currentView = 'shop'" class="text-gray-400 hover:text-white">All Jerseys</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">National Teams</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">Club Teams</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">Limited Editions</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">New Arrivals</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" @click="currentView = 'contact'" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">Shipping Info</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">Returns & Exchanges</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">Size Guide</a></li>
+            <li><a href="javascript:void(0)" class="text-gray-400 hover:text-white">FAQs</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">Subscribe for updates on new jerseys, exclusive offers and more.</p>
+          <form class="flex">
+            <input type="email" placeholder="Your email" class="px-3 py-2 text-gray-800 rounded-l w-full">
+            <button type="submit" class="bg-secondary-color text-white px-3 rounded-r hover:bg-opacity-90" style="background-color: #ff6a3d;">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between">
+        <p class="text-gray-400 mb-4 md:mb-0">© 2025 FootballFit. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white">Privacy Policy</a>
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white">Terms of Service</a>
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Jersey Detail Modal -->
+  <div class="modal-overlay" :class="{'show': isDetailOpen}" @click.self="isDetailOpen = false">
+    <div class="modal-content max-h-90vh overflow-auto" x-show="jerseyDetail">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold" x-text="jerseyDetail?.name"></h2>
+          <button @click="isDetailOpen = false" class="text-gray-500 hover:text-gray-800">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Image Gallery -->
+          <div>
+            <div class="swiper jerseySwiper" x-show="jerseyDetail?.images?.length > 0">
+              <div class="swiper-wrapper">
+                <template x-for="(img, index) in jerseyDetail?.images" :key="index">
+                  <div class="swiper-slide">
+                    <img :src="img" :alt="jerseyDetail?.name + ' view ' + (index + 1)" class="w-full h-auto rounded-lg">
+                  </div>
+                </template>
+              </div>
+              <div class="swiper-pagination mt-4"></div>
+            </div>
+          </div>
+          
+          <!-- Product Details -->
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-contain bg-no-repeat bg-center mr-3" :style="`background-image: url('${jerseyDetail?.teamLogo}')`"></div>
+              <div>
+                <h3 class="team-name text-xl" x-text="`${jerseyDetail?.player} #${jerseyDetail?.number}`"></h3>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jerseyDetail?.availability === 'In Stock',
+                    'bg-yellow-500': jerseyDetail?.availability === 'Low Stock',
+                    'bg-red-500': jerseyDetail?.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-sm" x-text="jerseyDetail?.availability"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-2xl font-bold mb-4" x-text="`$${jerseyDetail?.price.toFixed(2)}`"></div>
+            
+            <div class="mb-6">
+              <p class="text-gray-600" x-text="jerseyDetail?.description"></p>
+            </div>
+            
+            <!-- Size Selection -->
+            <div class="mb-6">
+              <h4 class="font-semibold mb-2">Select Size</h4>
+              <div class="flex flex-wrap gap-2">
+                <template x-for="size in jerseyDetail?.sizes" :key="size">
+                  <button 
+                    class="size-btn border border-gray-300 px-4 py-2 rounded-md hover:border-gray-500" 
+                    :class="{'active': selectedSize === size}"
+                    @click="selectedSize = size"
+                    x-text="size"
+                  ></button>
+                </template>
+              </div>
+              <p x-show="!selectedSize" class="text-sm text-red-500 mt-2">Please select a size</p>
+            </div>
+            
+            <!-- Color Selection -->
+            <div class="mb-8">
+              <h4 class="font-semibold mb-2">Select Color</h4>
+              <div class="flex flex-wrap gap-3">
+                <template x-for="color in jerseyDetail?.colors" :key="color">
+                  <div 
+                    class="color-swatch" 
+                    :style="`background-color: ${color}`"
+                    :class="{'active': selectedColor === color}"
+                    @click="selectedColor = color"
+                    :title="color.charAt(0).toUpperCase() + color.slice(1)"
+                  ></div>
+                </template>
+              </div>
+              <p x-show="!selectedColor" class="text-sm text-red-500 mt-2">Please select a color</p>
+            </div>
+            
+            <button 
+              @click="
+                if(selectedSize && selectedColor) {
+                  cart.push({
+                    id: jerseyDetail.id,
+                    name: jerseyDetail.name,
+                    player: jerseyDetail.player,
+                    number: jerseyDetail.number,
+                    price: jerseyDetail.price,
+                    size: selectedSize,
+                    color: selectedColor,
+                    quantity: 1,
+                    image: jerseyDetail.images[0]
+                  });
+                  isDetailOpen = false;
+                }
+              " 
+              class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center" 
+              :class="{'opacity-60 cursor-not-allowed': !selectedSize || !selectedColor}"
+            >
+              <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" :class="{'show': isCheckoutOpen}" @click.self="isCheckoutOpen = false">
+    <div class="modal-content" x-show="!isOrderConfirmed">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold">Checkout</h2>
+          <button @click="isCheckoutOpen = false" class="text-gray-500 hover:text-gray-800">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        
+        <form id="checkout-form" @submit.prevent="
+          // Simulate order processing
+          isOrderConfirmed = true;
+          orderNumber = 'ORD-' + Math.floor(Math.random() * 1000000);
+        ">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Billing & Shipping -->
+            <div>
+              <h3 class="text-xl font-semibold mb-4">Billing & Shipping</h3>
+              
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="firstName">First Name</label>
+                  <input type="text" id="firstName" required>
+                </div>
+                <div>
+                  <label for="lastName">Last Name</label>
+                  <input type="text" id="lastName" required>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="address">Address</label>
+                <input type="text" id="address" required>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="city">City</label>
+                  <input type="text" id="city" required>
+                </div>
+                <div>
+                  <label for="postalCode">Postal Code</label>
+                  <input type="text" id="postalCode" required>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="country">Country</label>
+                <select id="country" required>
+                  <option value="">Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+            </div>
+            
+            <!-- Payment & Order Summary -->
+            <div>
+              <h3 class="text-xl font-semibold mb-4">Payment</h3>
+              
+              <div class="mb-4">
+                <label for="cardName">Cardholder Name</label>
+                <input type="text" id="cardName" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label for="expiry">Expiry Date</label>
+                  <input type="text" id="expiry" placeholder="MM/YY" required>
+                </div>
+                <div>
+                  <label for="cvv">CVV</label>
+                  <input type="text" id="cvv" placeholder="XXX" required>
+                </div>
+              </div>
+              
+              <div class="bg-gray-100 p-4 rounded mb-6">
+                <h4 class="font-semibold mb-3">Order Summary</h4>
+                <template x-for="(item, index) in cart" :key="index">
+                  <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                    <div class="flex items-center">
+                      <span x-text="`${item.quantity}x `"></span>
+                      <span class="ml-2" x-text="`${item.name} (${item.size}, ${item.color})`"></span>
+                    </div>
+                    <span x-text="`$${(item.price * item.quantity).toFixed(2)}`"></span>
+                  </div>
+                </template>
+                
+                <div class="flex justify-between font-bold mt-4">
+                  <span>Total</span>
+                  <span x-text="`$${getCartTotal()}`"></span>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center">
+                Place Order
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Order Confirmation -->
+    <div class="modal-content max-w-lg" x-show="isOrderConfirmed">
+      <div class="p-8 text-center">
+        <div class="mb-6 text-green-500">
+          <i class="fas fa-check-circle text-6xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold mb-4">Thank You!</h2>
+        <p class="text-xl mb-2">Your order has been received</p>
+        <p class="text-gray-500 mb-6" x-text="`Order #: ${orderNumber}`"></p>
+        
+        <p class="mb-8">We've sent a confirmation email with order details. Your jerseys will be on their way soon!</p>
+        
+        <button @click="
+          isCheckoutOpen = false;
+          isOrderConfirmed = false;
+          cart = [];
+          currentView = 'shop';
+        " class="btn-primary px-8 py-3 rounded-lg font-semibold">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script id="app-script">
+    document.addEventListener('alpine:init', () => {
+      // Initialize swiper when the modal is shown
+      Alpine.effect(() => {
+        if (Alpine.$data(document.body).isDetailOpen) {
+          setTimeout(() => {
+            new Swiper('.jerseySwiper', {
+              pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+              },
+              loop: true,
+              autoplay: {
+                delay: 3000,
+              }
+            });
+          }, 100);
+        }
+      });
+      
+      // Load cart from localStorage on page load
+      const savedCart = localStorage.getItem('footballfit_cart');
+      if (savedCart) {
+        Alpine.$data(document.body).cart = JSON.parse(savedCart);
+      }
+      
+      // Save cart to localStorage when it changes
+      Alpine.effect(() => {
+        const cart = Alpine.$data(document.body).cart;
+        localStorage.setItem('footballfit_cart', JSON.stringify(cart));
+      });
+    });
+  </script>
+</body>
+</html>
