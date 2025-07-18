@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FootballFit | Premium Jersey Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+  <!-- GSAP Scripts for ScrollSmoother -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollSmoother.min.js"></script>
+  <style id="app-style">
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary-color: #1e293b;
+      --secondary-color: #ff6a3d;
+      --accent-color: #06b6d4;
+      --light-color: #f8fafc;
+      --dark-color: #0f172a;
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-secondary: linear-gradient(135deg, #ff0000 0%, #ff8a50 100%);
+      --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      background-attachment: fixed;
+      color: var(--dark-color);
+      min-height: 100vh;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://cdn.pixabay.com/photo/2013/07/13/12/15/grass-159218_1280.png');
+      background-repeat: repeat;
+      background-size: 200px;
+      opacity: 0.05;
+      z-index: -1;
+    }
+
+    h1, h2, h3, .team-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .header-bg {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-secondary);
+      border-radius: 0.5rem;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: white !important;
+      transform: translateY(-2px);
+    }
+
+    .hero-section {
+      background-image: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%), 
+                        url('https://cdn.pixabay.com/photo/2016/11/29/02/05/audience-1866738_1280.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      position: relative;
+      overflow: hidden;
+      min-height: 60vh;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 106, 61, 0.1) 50%, transparent 70%);
+      animation: heroShimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes heroShimmer {
+      0%, 100% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+    }
+
+    .jersey-card {
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .jersey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .jersey-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2), 
+                  0 0 20px rgba(255, 106, 61, 0.1);
+    }
+
+    .jersey-card:hover::before {
+      opacity: 0.05;
+    }
+
+    .jersey-card:hover .team-badge {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .team-badge {
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .player-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .availability-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .size-btn.active {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+
+
+    .btn-primary {
+      background: var(--gradient-secondary);
+      color: white;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(255, 106, 61, 0.3);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ff5824 0%, #ff7043 100%);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 106, 61, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+
+    .swiper-pagination-bullet {
+      background: var(--secondary-color) !important;
+      opacity: 0.5;
+      width: 12px;
+      height: 12px;
+    }
+
+    .swiper-pagination-bullet-active {
+      opacity: 1 !important;
+      transform: scale(1.2);
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: var(--secondary-color) !important;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      width: 44px !important;
+      height: 44px !important;
+      margin-top: -22px !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 18px !important;
+      font-weight: bold;
+    }
+
+    /* Smooth slideshow animations */
+    .slideshow-container {
+      overflow: hidden;
+    }
+    
+    .slideshow-container img {
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+    
+    .slideshow-arrow {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+    
+    .slideshow-arrow:hover {
+      background-color: rgba(0, 0, 0, 0.8) !important;
+      transform: scale(1.1);
+    }
+    
+    .slideshow-dot {
+      transition: all 0.3s ease;
+    }
+    
+    .slideshow-dot:hover {
+      transform: scale(1.3);
+    }
+
+    /* Mobile responsiveness for swiper */
+    @media (max-width: 768px) {
+      .swiper-slide img {
+        height: 300px;
+      }
+      
+      .swiper-button-next,
+      .swiper-button-prev {
+        width: 35px !important;
+        height: 35px !important;
+        margin-top: -17px !important;
+      }
+      
+      .swiper-button-next::after,
+      .swiper-button-prev::after {
+        font-size: 14px !important;
+      }
+      
+      .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+      }
+    }
+
+    /* Swiper loading state */
+    .swiper-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 400px;
+      background: #f8fafc;
+      border-radius: 1rem;
+    }
+
+    .modal-overlay {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(30, 41, 59, 0.6) 100%);
+      backdrop-filter: blur(8px);
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      overflow-y: auto;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 900px;
+      width: 95%;
+      max-height: 90vh;
+      transform: translateY(30px) scale(0.9);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow-y: auto;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--secondary-color);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid var(--secondary-color);
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .animate-slide-in-left {
+      animation: slideInLeft 0.6s ease-out;
+    }
+
+    .animate-slide-in-right {
+      animation: slideInRight 0.6s ease-out;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .scroll-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-secondary);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 106, 61, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 40;
+    }
+
+    .scroll-to-top.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .scroll-to-top:hover {
+      transform: translateY(0) scale(1.1);
+      box-shadow: 0 6px 25px rgba(255, 106, 61, 0.4);
+    }
+
+    .scroll-to-top:active {
+      transform: translateY(0) scale(0.95);
+    }
+
+    @media (max-width: 768px) {
+      .scroll-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+    }
+
+    .filter-panel {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btn {
+      background-color: #e2e8f0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .quantity-btn:hover {
+      background-color: #cbd5e1;
+    }
+
+    .quantity-input {
+      width: 40px;
+      text-align: center;
+      border: none;
+      font-weight: 600;
+    }
+
+    #checkout-form input,
+    #checkout-form select {
+      border: 1px solid #cbd5e1;
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+      width: 100%;
+    }
+
+    #checkout-form label {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+      .hero-section {
+        background-attachment: scroll;
+        min-height: 50vh;
+        padding: 2rem 0;
+      }
+
+      .hero-section h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-section p {
+        font-size: 1rem;
+      }
+
+      .jersey-card:hover {
+        transform: translateY(-6px) scale(1.01);
+      }
+
+      .mobile-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        height: 100vh;
+        background-color: var(--primary-color);
+        z-index: 40;
+        transition: left 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 1rem;
+      }
+
+      .mobile-menu.show {
+        left: 0;
+      }
+
+      .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 39;
+        display: none;
+      }
+
+      .menu-overlay.show {
+        display: block;
+      }
+
+      .filter-panel {
+        padding: 1rem;
+      }
+
+      .modal-content {
+        width: 98%;
+        margin: 1rem;
+        max-height: 95vh;
+      }
+
+      .grid {
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+
+      .hero-section {
+        min-height: 40vh;
+        padding: 1.5rem 0;
+      }
+
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .jersey-card {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen" x-data="{ 
+  currentView: 'home',
+  mobileMenuOpen: false,
+  cart: [],
+  jerseyDetail: null,
+  selectedSize: null,
+  showScrollToTop: false,
+
+  isDetailOpen: false,
+  isCheckoutOpen: false,
+  isOrderConfirmed: false,
+  orderNumber: '',
+  filterData: {
+    selectedTeam: '',
+    selectedSize: '',
+    searchQuery: ''
+  },
+  jerseys: [
+    { 
+        id: 1, 
+        team: 'Real Madrid', 
+        number: 7, 
+        price: 799, 
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/50/38/ca/5038ca29a00a6ec85691e02afa6854bb.jpg', 
+        teamLogo: 'https://i.pinimg.com/1200x/09/8f/ac/098fac3e8e44d2ba25ce9b000e959c36.jpg', 
+        name: 'Real Madrid Home Jersey 2024/25', 
+        description: 'Official home jersey of Real Madrid for the 2024/25 season. Features the iconic white color with purple accents, moisture-wicking fabric and embroidered club crest. Made from 100% recycled polyester.', 
+        images: ['https://i.pinimg.com/736x/50/38/ca/5038ca29a00a6ec85691e02afa6854bb.jpg', 'https://i.pinimg.com/736x/0d/cf/58/0dcf58ab690c21b1e0065ba9da0e340a.jpg', 'https://i.pinimg.com/736x/07/ae/0a/07ae0a4f18f2bd061ec17644674959eb.jpg', 'https://i.pinimg.com/736x/e7/b8/76/e7b8765d4ce384c274ecea2a10d20bf0.jpg', 'https://i.pinimg.com/1200x/68/12/33/6812337948b9953086de993d1d0674ca.jpg', 'https://i.pinimg.com/736x/29/2c/72/292c72800f77edec611a8cc1c2be4229.jpg'] 
+    },
+    { 
+        id: 2, 
+        team: 'FC Barcelona',
+        number: 19, 
+        price: 599, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/7d/12/70/7d12702fac6fba78352f5e75af1576d1.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/0d/15/60/0d1560f6f020b3336402fcbc550f86d7.jpg', 
+        name: 'FC Barcelona Home Jersey 2024/25', 
+        description: 'Official Home jersey of FC Barcelona for the 2024/25 season. Features the traditional blaugrana colors in a modern gradient design with lightweight fabric for maximum comfort and performance.', 
+        images: ['https://i.pinimg.com/736x/6b/d0/b0/6bd0b0d3bba6d3d1b10d9a045ec64e2a.jpg','https://i.pinimg.com/1200x/1e/eb/a5/1eeba58d8a5ac90b8660fde65b54058e.jpg', 'https://i.pinimg.com/1200x/af/85/8f/af858f42be89d9788efe80967e6a5435.jpg', 'https://i.pinimg.com/736x/e3/a3/db/e3a3db042ee9a00833727161fe41c0df.jpg', 'https://i.pinimg.com/736x/95/60/08/95600820e6780af1453180cccbfe03ef.jpg', 'https://i.pinimg.com/736x/fc/b9/aa/fcb9aa9ccce95374a6b7b9da2948ac32.jpg'] 
+    },
+    { 
+        id: 3, 
+        team: 'Liverpool FC',
+        number: 20,
+        price: 699, 
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/1200x/e9/10/46/e91046a17985079aef043f2d1a613f3b.jpg', 
+        teamLogo: 'https://i.pinimg.com/1200x/07/0b/2f/070b2fb92134493de90fdc66cc2ad5ac.jpg', 
+        name: 'Liverpool FC Home Jersey 2024/25', 
+        description: 'Jota #20 — Forever in Our Hearts.This is more than a jersey.It’s a tribute. A symbol of a man who gave us everything. Wear it with pride. Wear it with love. For Diogo Jota — forever a Red, forever remembered. ❤️', 
+        images: ['https://i.pinimg.com/736x/4a/16/5e/4a165e981e8187a2e9507ae1c3e166da.jpg','https://i.pinimg.com/1200x/b9/3d/e0/b93de04a6262bcecd1132e576a419bea.jpg', 'https://i.pinimg.com/736x/2a/0e/fe/2a0efe13471a96a34893337dd7034f65.jpg', 'https://i.pinimg.com/736x/f2/1d/cd/f21dcd9587747856094250835a7c6b84.jpg', 'https://i.pinimg.com/736x/1e/eb/eb/1eebebee1a6dff0b33db72ccd1b7bfb0.jpg', 'https://i.pinimg.com/1200x/7f/c3/b6/7fc3b61299e6ef8f1e4e416bbf948d34.jpg'] 
+    },
+    { 
+        id: 4, 
+        team: 'Bayern Munich', 
+        number: 42, 
+        price: 599, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/1200x/87/73/6f/87736fffed1a64fd9a7aab6bb5da02ed.jpg', 
+        teamLogo: 'https://i.pinimg.com/1200x/8f/60/ea/8f60ea8b8d6b7a9e0274336012b2e4ae.jpg', 
+        name: 'Bayern Munich Home Jersey 2024/25', 
+        description: 'Limited edition home jersey of Bayern Munich for the 2024/25 season. Special design with premium fabric featuring the club colors and commemorative details.', 
+        images: ['https://i.pinimg.com/736x/06/56/42/0656426bdf1f481326e39dd0c3ea99b1.jpg','https://i.pinimg.com/736x/db/9d/d5/db9dd5c96ff7a05a931f6ba5a22f2ac5.jpg','https://i.pinimg.com/736x/f1/7b/45/f17b453bac0d43c2cd3f5febe3641bf8.jpg', 'https://i.pinimg.com/1200x/84/c5/92/84c592d743e2f1776dda4da7a3fdd044.jpg', 'https://i.pinimg.com/1200x/47/1c/c6/471cc6969fdf18fffffc6a6d71a7e5d7.jpg', 'https://i.pinimg.com/736x/f9/f4/fb/f9f4fb25cda326b4f4b1283868197dc9.jpg'] 
+    },
+    { 
+        id: 5, 
+        team: 'Paris Saint-Germain (PSG)', 
+        number: 10, 
+        price: 699, 
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
+        availability: 'In Stock', 
+        image: 'https://emporiosports.in/wp-content/uploads/2025/05/2425-PSG-Soccer-Jersey-Home-5-600x600-1.webp', 
+        teamLogo: 'https://i.pinimg.com/736x/39/d0/4d/39d04d26ae9d7e6a8dae4b48c79f6736.jpg', 
+        name: 'PSG Home Jersey 2024/25', 
+        description: 'Official home jersey of Paris Saint-Germain for the 2024/25 season. Features the traditional navy blue with red accents, modern performance fabric and embroidered club crest.', 
+        images: ['https://i.pinimg.com/736x/fe/37/f5/fe37f5fa68f3dc3e2302c345c792744b.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2016/05/27/14/33/football-1419954_1280.jpg'] 
+    },
+    { 
+        id: 6, 
+        team: 'Manchester City', 
+        number: 10, 
+        price: 89.99, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/fe/b5/53/feb553823b6215ba80ffbb85a5086237.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/6b/fc/68/6bfc686cbae206f958287b01fcdf1f79.jpg', 
+        name: 'Manchester City Away Jersey 2024/25', 
+        description: 'Official away jersey of Manchester City for the 2024/25 season. Sky blue design with advanced ventilation technology and embroidered club badge.', 
+        images: ['https://i.pinimg.com/736x/d0/22/5a/d0225a0b9d09a1fbad24af50bb91c7c6.jpg', 'https://cdn.pixabay.com/photo/2018/06/29/11/17/sport-3505870_1280.jpg', 'https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg'] 
+    },
+    { 
+        id: 7, 
+        team: 'AC Milan', 
+        number: 10, 
+        price: 449, 
+        sizes: ['S', 'M', 'L', 'XL', 'XXL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/34/a5/5c/34a55c3f0d8d882dd5f5bc744964aa14.jpg', 
+        teamLogo: 'https://i.pinimg.com/1200x/bd/83/4b/bd834bdfe8cce698dba5c3f7a835f0a6.jpg', 
+        name: 'AC Milan Home Jersey 2024/25', 
+        description: 'Official home jersey of AC Milan for the 2024/25 season. Features the iconic red and black stripes with premium quality fabric and embroidered club crest.', 
+        images: ['https://i.pinimg.com/736x/9c/39/00/9c39000daa414ef9cff57484b885ae3d.jpg', 'https://cdn.pixabay.com/photo/2016/11/22/23/44/stadium-1851216_1280.jpg', 'https://cdn.pixabay.com/photo/2014/10/14/20/24/football-488714_1280.jpg'] 
+    },
+    { 
+        id: 8, 
+        team: 'Inter Milan', 
+        number: 10, 
+        price: 499, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'Low Stock', 
+        image: 'https://i.pinimg.com/1200x/3b/ff/40/3bff40497f3c46a927918af7eff042f7.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/6e/62/de/6e62deb01e9ee3b18cb5e878378f1864.jpg', 
+        name: 'Inter Milan Home Jersey 2024/25', 
+        description: 'Official Home jersey of Inter Milan for the 2024/25 season. Features innovative black and blue design with special commemorative details.', 
+        images: ['https://i.pinimg.com/736x/25/5e/2d/255e2d94bd20f7f07ad494df0cc29c0e.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    },
+    { 
+        id: 9, 
+        team: 'Chelsea FC', 
+        number: 10, 
+        price: 499, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/1200x/07/a1/d6/07a1d64d48183e54510b52268048b632.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/51/e4/51/51e45104dc21ed8c65334e7d8834ee46.jpg', 
+        name: 'Chelsea FC Home Jersey 2024/25', 
+        description: 'Official Home jersey of Chelsea FC for the 2024/25 season. Features royal blue design with innovative fabric technology and commemorative details.', 
+        images: ['https://i.pinimg.com/736x/e9/b0/04/e9b00434a3d93f3334195ff11752751a.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    },
+    { 
+        id: 10, 
+        team: 'Arsenal FC', 
+        number: 7, 
+        price: 499, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/21/b2/50/21b2500bb95038627e8b1a8ec5c5eb94.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/bb/d7/4b/bbd74bb66799672803c091f250939cf1.jpg', 
+        name: 'Arsenal FC Third Jersey 2024/25', 
+        description: 'Official Home jersey of Arsenal FC for the 2024/25 season. Features innovative red and white design with special commemorative details.', 
+        images: ['https://i.pinimg.com/1200x/9d/85/0f/9d850fff261878ebc70725b2b1904c6a.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    },
+    { 
+        id: 11, 
+        team: 'Manchester United', 
+        number: 7, 
+        price: 599, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/fa/b1/e2/fab1e2eee915b1b1ee7c9ade32380040.jpg', 
+        teamLogo: 'https://i.pinimg.com/1200x/57/18/b2/5718b2b2b21523d3fb6a0a3266264b2a.jpg', 
+        name: 'Manchester United Third Jersey 2007/8', 
+        description: 'Official Home jersey of Manchester United for the 2007/8 season. Features innovative red and black design with special commemorative details.', 
+        images: ['https://i.pinimg.com/736x/68/ed/e0/68ede0359ab4cc6d6ce13c909711fba5.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    },
+    { 
+        id: 12, 
+        team: 'Juventus', 
+        number: 7, 
+        price: 499, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/a3/ca/fe/a3cafe15269593ab8b6b21929d529502.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/30/40/27/304027193b2fea7239591ac7ee795e79.jpg', 
+        name: 'Juventus Third Jersey 2018/19', 
+        description: 'Official Home jersey jersey of Juventus for the 2018/19 season. Features innovative black and white design with special commemorative details.', 
+        images: ['https://i.pinimg.com/736x/d5/55/48/d55548094f11e8a977f5d62776bf5f2b.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    },
+    { 
+        id: 13, 
+        team: 'Tottenham Hotspur', 
+        number: 7, 
+        price: 399, 
+        sizes: ['S', 'M', 'L', 'XL'], 
+        availability: 'In Stock', 
+        image: 'https://i.pinimg.com/736x/92/6f/05/926f05f271ca167c0e4d2ad58ddd817b.jpg', 
+        teamLogo: 'https://i.pinimg.com/736x/af/f5/cc/aff5ccf1d420d165108899c584f5365e.jpg', 
+        name: 'Tottenham Third Jersey 2024/25', 
+        description: 'Limited edition third jersey of Tottenham Hotspur for the 2024/25 season. Features innovative white and navy design with special commemorative details.', 
+        images: ['https://i.pinimg.com/736x/5e/c2/86/5ec2868464b9766a4a67e56c22e5dfa7.jpg', 'https://cdn.pixabay.com/photo/2014/05/21/15/18/beach-349788_1280.jpg', 'https://cdn.pixabay.com/photo/2013/07/13/12/42/soccer-160170_1280.png'] 
+    }
+],
+  getCartCount() {
+    return this.cart.reduce((sum, item) => sum + item.quantity, 0)
+  },
+  getCartTotal() {
+    return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)
+  },
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Fallback for browsers that don't support smooth scrolling
+    setTimeout(() => {
+      if (window.scrollY > 0) {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+    }, 100);
+  },
+  filteredJerseys() {
+    let filtered = this.jerseys;
+
+    if (this.filterData.selectedTeam) {
+      filtered = filtered.filter(jersey => jersey.team === this.filterData.selectedTeam);
+    }
+
+    if (this.filterData.selectedSize) {
+      filtered = filtered.filter(jersey => jersey.sizes.includes(this.filterData.selectedSize));
+    }
+
+    if (this.filterData.searchQuery) {
+      const query = this.filterData.searchQuery.toLowerCase();
+      filtered = filtered.filter(jersey => 
+        jersey.name.toLowerCase().includes(query) ||
+        jersey.team.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered;
+  },
+  clearFilters() {
+    this.filterData = {
+      selectedTeam: '',
+      selectedSize: '',
+      searchQuery: ''
+    };
+  },
+  navigateToSection(section) {
+    this.currentView = section;
+    this.mobileMenuOpen = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}" x-init="
+  // Load cart from localStorage on page load
+  let savedCart = localStorage.getItem('footballfit_cart');
+  if (savedCart && savedCart !== 'undefined') {
+    try {
+      cart = JSON.parse(savedCart);
+    } catch (e) {
+      cart = [];
+    }
+  }
+
+  // Save cart to localStorage when it changes
+  $watch('cart', () => {
+    localStorage.setItem('footballfit_cart', JSON.stringify(cart));
+  });
+
+  // Show/hide scroll to top button
+  window.addEventListener('scroll', () => {
+      const scrollToTopButton = document.getElementById('scrollToTopButton');
+      if (document.documentElement.scrollTop > 300) {
+          scrollToTopButton.classList.add('show');
+      } else {
+          scrollToTopButton.classList.remove('show');
+      }
+  });
+">
+
+  <!-- Header -->
+  <header class="header-bg sticky top-0 z-30 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-2">
+          <a href="javascript:void(0)" @click="currentView = 'home'" class="flex items-center">
+            <i class="fas fa-futbol text-3xl text-secondary-color mr-2" style="color: #ff6a3d;"></i>
+            <h1 class="text-xl md:text-2xl font-bold text-white">FootballFit</h1>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="javascript:void(0)" @click="currentView = 'home'; scrollToTop()" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'home'}">Home</a>
+          <a href="javascript:void(0)" @click="currentView = 'shop'; scrollToTop()" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'shop'}">Shop</a>
+          <a href="javascript:void(0)" @click="currentView = 'cart'; scrollToTop()" class="nav-link text-white hover:text-gray-300 relative" :class="{'active': currentView === 'cart'}">
+            Cart
+            <span x-show="getCartCount() > 0" class="cart-badge">
+              <span x-text="getCartCount()"></span>
+            </span>
+          </a>
+          <a href="javascript:void(0)" @click="currentView = 'contact'; scrollToTop()" class="nav-link text-white hover:text-gray-300" :class="{'active': currentView === 'contact'}">Contact</a>
+          <a href="login.html" class="nav-link text-white hover:text-gray-300">Login</a>
+        </nav>
+
+        <!-- Mobile Navigation Button -->
+        <div class="flex md:hidden items-center space-x-4">
+          <a href="javascript:void(0)" @click="currentView = 'cart'" class="text-white hover:text-gray-300 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span x-show="getCartCount() > 0" class="cart-badge">
+              <span x-text="getCartCount()"></span>
+            </span>
+          </a>
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Overlay -->
+  <div @click="mobileMenuOpen = false" class="menu-overlay" :class="{'show': mobileMenuOpen}"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu md:hidden" :class="{'show': mobileMenuOpen}">
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center space-x-2">
+        <i class="fas fa-futbol text-2xl text-secondary-color" style="color: #ff6a3d;"></i>
+        <h1 class="text-xl font-bold text-white">FootballFit</h1>
+      </div>
+      <button @click="mobileMenuOpen = false" class="text-white focus:outline-none">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <nav class="flex flex-col space-y-6">
+      <a href="javascript:void(0)" @click="currentView = 'home'; mobileMenuOpen = false; scrollToTop()" class="text-white text-lg">Home</a>
+      <a href="javascript:void(0)" @click="currentView = 'shop'; mobileMenuOpen = false; scrollToTop()" class="text-white text-lg">Shop</a>
+      <a href="javascript:void(0)" @click="currentView = 'cart'; mobileMenuOpen = false; scrollToTop()" class="text-white text-lg">Cart</a>
+      <a href="javascript:void(0)" @click="currentView = 'contact'; mobileMenuOpen = false; scrollToTop()" class="text-white text-lg">Contact</a>
+      <a href="login.html" class="text-white text-lg">Login</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <!-- Home View -->
+    <div x-show="currentView === 'home'" class="mb-10">
+      <!-- Hero Section -->
+      <section class="hero-section py-16 md:py-32 mb-12 flex items-center justify-center">
+        <div class="container mx-auto px-4 text-center">
+          <h1 class="text-3xl md:text-4xl lg:text-6xl font-extrabold text-white mb-6">Premium Football Jerseys</h1>
+          <p class="text-base md:text-lg lg:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">Gear up with authentic team jerseys worn by the world's greatest players. Made for true fans.</p>
+          <button @click="currentView = 'shop'" class="btn-primary text-lg font-semibold px-6 md:px-8 py-3 rounded-full">
+            Shop Now
+          </button>
+        </div>
+      </section>
+
+      <!-- Featured Categories -->
+      <section class="container mx-auto px-4 mb-16 animate-fade-in-up">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Featured Categories</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-48 md:h-56 bg-cover bg-center" style="background-image: url('/Images/3.jpg')"></div>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-3">National Teams</h3>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">Rep your country with official national team jerseys</p>
+              <button @click="filterData.selectedTeam = 'National FC'; currentView = 'shop'" class="btn-primary px-4 md:px-6 py-2 rounded-full text-sm md:text-base">View Collection</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-48 md:h-56 bg-cover bg-center" style="background-image: url('/images/1.jpg')"></div>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-3">Club Teams</h3>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">Support your favorite clubs with authentic jerseys</p>
+              <button @click="currentView = 'shop'" class="btn-primary px-4 md:px-6 py-2 rounded-full text-sm md:text-base">View Collection</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="h-48 md:h-56 bg-cover bg-center" style="background-image: url('/Images/limited.jpg')"></div>
+            <div class="p-4 md:p-6 text-center">
+              <h3 class="text-lg md:text-xl font-bold mb-3">Limited Editions</h3>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">Exclusive designs and special edition jerseys</p>
+              <button @click="filterData.searchQuery = 'limited'; currentView = 'shop'" class="btn-primary px-4 md:px-6 py-2 rounded-full text-sm md:text-base">View Collection</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Products -->
+      <section class="container mx-auto px-4 mb-16 animate-fade-in-up">
+        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-center">Featured Jerseys</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <template x-for="jersey in jerseys.slice(0, 4)" :key="jersey.id">
+            <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+              jerseyDetail = jersey;
+              selectedSize = null;
+              isDetailOpen = true;
+            ">
+              <div class="relative">
+                <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+                <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                  <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+                </div>
+              </div>
+              <div class="p-3 md:p-4">
+                <div class="flex justify-between items-center mb-2">
+                  <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                  <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+                </div>
+                <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold text-base md:text-lg">
+                    ₹<span x-text="jersey.price"></span>
+                  </span>
+                  <div class="flex items-center">
+                    <span class="availability-dot mr-2" :class="{
+                      'bg-green-500': jersey.availability === 'In Stock',
+                      'bg-yellow-500': jersey.availability === 'Low Stock',
+                      'bg-red-500': jersey.availability === 'Pre-Order'
+                    }"></span>
+                    <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <div class="text-center mt-8">
+          <button @click="currentView = 'shop'" class="btn-primary text-base md:text-lg font-semibold px-6 md:px-8 py-3 rounded-full">
+            View All Jerseys
+          </button>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="py-12 md:py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+          <h2 class="text-2xl md:text-3xl font-bold mb-8 md:mb-12 text-center">What Our Customers Say</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">"The quality of these jerseys is outstanding! Perfect fit and fast shipping. Will definitely order again."</p>
+              <div class="flex items-center">
+                <img src="/Images/25.jpeg" alt="Rupam Das" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-3 object-cover">
+                <div>
+                  <h4 class="font-semibold text-sm md:text-base">Rupam Das</h4>
+                  <p class="text-xs md:text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">"I bought a limited edition jersey and couldn't be happier. Authentic quality and the embroidery is perfect!"</p>
+              <div class="flex items-center">
+                <div class="w-8 h-8 md:w-10 md:h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div>
+                  <h4 class="font-semibold text-sm md:text-base">Rodrygo Ghosh</h4>
+                  <p class="text-xs md:text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg">
+              <div class="text-yellow-500 flex mb-4">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm md:text-base">"Great selection of jerseys and excellent customer service. Had a question and they responded very quickly."</p>
+              <div class="flex items-center">
+                <div class="w-8 h-8 md:w-10 md:h-10 bg-gray-300 rounded-full mr-3"></div>
+                <div>
+                  <h4 class="font-semibold text-sm md:text-base">Samay Raina</h4>
+                  <p class="text-xs md:text-sm text-gray-500">Verified Customer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Newsletter -->
+      <section class="py-12 md:py-16 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
+        <div class="container mx-auto px-4 text-center">
+          <h2 class="text-2xl md:text-3xl font-bold mb-4">Stay Updated</h2>
+          <p class="text-base md:text-lg mb-6 md:mb-8 max-w-xl mx-auto">Subscribe to our newsletter for exclusive deals, new arrivals, and updates on limited edition releases.</p>
+          <form class="flex flex-col sm:flex-row justify-center max-w-lg mx-auto gap-2 sm:gap-0">
+            <input type="email" placeholder="Your email address" class="px-4 py-3 rounded-lg sm:rounded-r-none sm:w-2/3 w-full text-gray-800 focus:outline-none">
+            <button type="submit" class="bg-secondary-color hover:bg-secondary-dark px-4 py-3 rounded-lg sm:rounded-l-none font-semibold">Subscribe</button>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <!-- Shop View -->
+    <div x-show="currentView === 'shop'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Shop Jerseys</h1>
+
+      <!-- Filter Panel -->
+      <div class="filter-panel p-4 md:p-6 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label class="text-white text-sm block mb-1">Team</label>
+            <select x-model="filterData.selectedTeam" class="w-full p-2 rounded text-sm">
+              <option value="">All Teams</option>
+              <option value="Team A">Team A</option>
+              <option value="Team B">Team B</option>
+              <option value="Team C">Team C</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-white text-sm block mb-1">Size</label>
+            <select x-model="filterData.selectedSize" class="w-full p-2 rounded text-sm">
+              <option value="">All Sizes</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-white text-sm block mb-1">Search</label>
+            <input type="text" x-model="filterData.searchQuery" placeholder="Search jerseys..." class="w-full p-2 rounded text-sm">
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <button @click="clearFilters()" class="text-white bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-sm">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <!-- Dynamic Jersey Cards -->
+        <template x-for="jersey in filteredJerseys()" :key="jersey.id">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+            jerseyDetail = jersey;
+            selectedSize = null;
+            selectedColor = null;
+            isDetailOpen = true;
+          ">
+            <div class="relative">
+              <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+              </div>
+            </div>
+            <div class="p-3 md:p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+              </div>
+              <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg">
+                  ₹<span x-text="jersey.price"></span>
+                </span>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jersey.availability === 'In Stock',
+                    'bg-yellow-500': jersey.availability === 'Low Stock',
+                    'bg-red-500': jersey.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- No Results Message -->
+        <div x-show="filteredJerseys().length === 0" class="col-span-full text-center py-16">
+          <i class="fas fa-search text-4xl md:text-5xl text-gray-300 mb-4"></i>
+          <h3 class="text-xl md:text-2xl font-bold text-gray-500 mb-2">No jerseys found</h3>
+          <p class="text-gray-500 mb-6 text-sm md:text-base">Try adjusting your search criteria or clearing the filters.</p>
+          <button @click="clearFilters()" class="btn-primary px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
+            Clear All Filters
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart View -->
+    <div x-show="currentView === 'cart'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Your Cart</h1>
+
+      <div x-show="cart.length === 0" class="text-center py-16">
+        <i class="fas fa-shopping-cart text-4xl md:text-5xl text-gray-300 mb-4"></i>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-500 mb-4">Your cart is empty</h2>
+        <p class="text-gray-500 mb-6 text-sm md:text-base">Looks like you haven't added any jerseys to your cart yet.</p>
+        <button @click="currentView = 'shop'" class="btn-primary text-base md:text-lg font-semibold px-6 md:px-8 py-3 rounded-full">
+          Continue Shopping
+        </button>
+      </div>
+
+      <div x-show="cart.length > 0" class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+        <!-- Cart Items -->
+        <div class="mb-8">
+          <div class="flex font-bold text-gray-600 border-b pb-4 mb-4 hidden md:flex">
+            <div class="w-2/5">Product</div>
+            <div class="w-1/5 text-center">Price</div>
+            <div class="w-1/5 text-center">Quantity</div>
+            <div class="w-1/5 text-center">Total</div>
+          </div>
+
+          <template x-for="(item, index) in cart" :key="index">
+            <div class="flex flex-col md:flex-row items-center py-4 border-b">
+              <div class="w-full md:w-2/5 flex items-center mb-4 md:mb-0">
+                <img :src="item.image" :alt="item.name" class="w-14 h-14 md:w-16 md:h-16 object-cover rounded mr-4">
+                <div class="flex-1">
+                  <h3 class="font-semibold text-sm md:text-base" x-text="item.name"></h3>
+                  <div class="text-xs md:text-sm text-gray-500">
+                    <span x-text="`Size: ${item.size}`"></span>
+                  </div>
+                  <button @click="cart.splice(index, 1)" class="text-red-500 text-xs md:text-sm mt-1 md:hidden flex items-center">
+                    <i class="fas fa-trash-alt mr-1"></i> Remove
+                  </button>
+                </div>
+              </div>
+
+              <div class="w-full md:w-1/5 text-center mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Price:</div>
+                <span class="text-sm md:text-base" x-text="`$${item.price.toFixed(2)}`"></span>
+              </div>
+
+              <div class="w-full md:w-1/5 text-center mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Quantity:</div>
+                <div class="quantity-selector inline-flex">
+                  <div class="quantity-btn" @click="if(item.quantity > 1) item.quantity--">-</div>
+                  <input type="text" class="quantity-input" x-model.number="item.quantity" min="1">
+                  <div class="quantity-btn" @click="item.quantity++">+</div>
+                </div>
+              </div>
+
+              <div class="w-full md:w-1/5 text-center font-semibold mb-4 md:mb-0">
+                <div class="md:hidden text-sm text-gray-500 mb-1">Total:</div>
+                <span class="text-sm md:text-base" x-text="`$${(item.price * item.quantity).toFixed(2)}`"></span>
+              </div>
+
+              <div class="hidden md:block">
+                <button @click="cart.splice(index, 1)" class="text-red-500">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="lg:flex justify-between items-start gap-8">
+          <div class="lg:w-1/2 mb-6 lg:mb-0">
+            <h3 class="font-semibold text-lg mb-3">Special Instructions</h3>
+            <textarea class="w-full p-2 border rounded text-sm md:text-base" rows="3" placeholder="Add a note about your order..."></textarea>
+          </div>
+
+          <div class="lg:w-1/3">
+            <div class="bg-gray-100 p-4 rounded">
+              <h3 class="font-semibold text-lg mb-4">Order Summary</h3>
+              <div class="flex justify-between mb-2 text-sm md:text-base">
+                <span>Subtotal</span>
+                <span x-text="`$${getCartTotal()}`"></span>
+              </div>
+              <div class="flex justify-between mb-2 text-sm md:text-base">
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
+              </div>
+              <div class="flex justify-between font-bold text-base md:text-lg border-t border-gray-300 pt-4 mt-4">
+                <span>Total</span>
+                <span x-text="`$${getCartTotal()}`"></span>
+              </div>
+
+              <button @click="isCheckoutOpen = true" class="btn-primary w-full text-center py-3 rounded-lg mt-6 font-semibold text-sm md:text-base">
+                Proceed to Checkout
+              </button>
+
+              <button @click="currentView = 'shop'" class="w-full text-center py-3 text-gray-600 hover:text-gray-900 mt-4 text-sm md:text-base">
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact View -->
+    <div x-show="currentView === 'contact'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Contact Us</h1>
+
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="md:flex">
+          <div class="md:w-1/2 bg-primary-color p-6 md:p-8 text-white" style="background-color: #1a2238;">
+            <h2 class="text-xl md:text-2xl font-bold mb-6">Get In Touch</h2>
+            <p class="mb-6 text-sm md:text-base">Have questions about our products, orders or need assistance? Fill out the form and our team will get back to you shortly.</p>
+
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2 text-sm md:text-base">Store Location</h3>
+              <p class="text-sm md:text-base">EP Block, Sector V, Kolkata, West Bengal 700091</p>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2 text-sm md:text-base">Phone</h3>
+              <p class="text-sm md:text-base">6290688616</p>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2 text-sm md:text-base">Email</h3>
+              <p class="text-sm md:text-base">prabirkrmondal02@gmail.com</p>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="font-semibold mb-2 text-sm md:text-base">Business Hours</h3>
+              <p class="text-sm md:text-base">Monday-Friday: 9am - 6pm<br>Saturday: 10am - 4pm<br>Sunday: Closed</p>
+            </div>
+
+            <div class="mt-8">
+              <h3 class="font-semibold mb-3 text-sm md:text-base">Follow Us</h3>
+              <div class="flex space-x-4">
+                <a href="https://github.com/MbappeNinja" target="_blank" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-github fa-lg"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/prabircode/" target="_blank" class="text-white hover:text-secondary-color" style="color: #ff6a3d;">
+                  <i class="fab fa-linkedin fa-lg"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="md:w-1/2 p-6 md:p-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-6">Send Us a Message</h2>
+            <form>
+              <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-semibold mb-2 text-sm md:text-base">Name</label>
+                <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color text-sm md:text-base">
+              </div>
+
+              <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-semibold mb-2 text-sm md:text-base">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color text-sm md:text-base">
+              </div>
+
+              <div class="mb-4">
+                <label for="subject" class="block text-gray-700 font-semibold mb-2 text-sm md:text-base">Subject</label>
+                <input type="text" id="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color text-sm md:text-base">
+              </div>
+
+              <div class="mb-6">
+                <label for="message" class="block text-gray-700 font-semibold mb-2 text-sm md:text-base">Message</label>
+                <textarea id="message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-color text-sm md:text-base"></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold text-sm md:text-base">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Jerseys Section -->
+    <div x-show="currentView === 'all-jerseys'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">All Jerseys</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <template x-for="jersey in jerseys" :key="jersey.id">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+            jerseyDetail = jersey;
+            selectedSize = null;
+            selectedColor = null;
+            isDetailOpen = true;
+          ">
+            <div class="relative">
+              <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+              </div>
+            </div>
+            <div class="p-3 md:p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+              </div>
+              <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg">
+                  ₹<span x-text="jersey.price"></span>
+                </span>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jersey.availability === 'In Stock',
+                    'bg-yellow-500': jersey.availability === 'Low Stock',
+                    'bg-red-500': jersey.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- National Teams Section -->
+    <div x-show="currentView === 'national-teams'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">National Teams</h1>
+      <div class="text-center py-16">
+        <i class="fas fa-flag text-4xl md:text-5xl text-gray-300 mb-4"></i>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-500 mb-4">National Team Jerseys</h2>
+        <p class="text-gray-500 mb-6 text-sm md:text-base">National team jersey collection coming soon!</p>
+        <button @click="currentView = 'shop'" class="btn-primary px-4 md:px-6 py-2 rounded-full text-sm md:text-base">
+          Browse Other Jerseys
+        </button>
+      </div>
+    </div>
+
+    <!-- Club Teams Section -->
+    <div x-show="currentView === 'club-teams'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Club Teams</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <template x-for="jersey in jerseys.filter(j => j.team !== 'National FC')" :key="jersey.id">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+            jerseyDetail = jersey;
+            selectedSize = null;
+            selectedColor = null;
+            isDetailOpen = true;
+          ">
+            <div class="relative">
+              <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+              </div>
+            </div>
+            <div class="p-3 md:p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+              </div>
+              <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg">
+                  ₹<span x-text="jersey.price"></span>
+                </span>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jersey.availability === 'In Stock',
+                    'bg-yellow-500': jersey.availability === 'Low Stock',
+                    'bg-red-500': jersey.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Limited Editions Section -->
+    <div x-show="currentView === 'limited-editions'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Limited Editions</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <template x-for="jersey in jerseys.filter(j => j.name.toLowerCase().includes('third') || j.name.toLowerCase().includes('limited'))" :key="jersey.id">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+            jerseyDetail = jersey;
+            selectedSize = null;
+            selectedColor = null;
+            isDetailOpen = true;
+          ">
+            <div class="relative">
+              <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+              </div>
+            </div>
+            <div class="p-3 md:p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+              </div>
+              <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg">
+                  ₹<span x-text="jersey.price"></span>
+                </span>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jersey.availability === 'In Stock',
+                    'bg-yellow-500': jersey.availability === 'Low Stock',
+                    'bg-red-500': jersey.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- New Arrivals Section -->
+    <div x-show="currentView === 'new-arrivals'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">New Arrivals</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <template x-for="jersey in jerseys.slice(0, 4)" :key="jersey.id">
+          <div class="jersey-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer" @click="
+            jerseyDetail = jersey;
+            selectedSize = null;
+            selectedColor = null;
+            isDetailOpen = true;
+          ">
+            <div class="relative">
+              <img :src="jersey.image" :alt="jersey.name" class="w-full h-48 md:h-56 object-cover">
+              <div class="absolute top-3 left-3 bg-white rounded-full p-1">
+                <div class="team-badge" :style="`background-image: url('${jersey.teamLogo}')`"></div>
+              </div>
+              <div class="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
+                NEW
+              </div>
+            </div>
+            <div class="p-3 md:p-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="team-name text-base md:text-lg font-semibold" x-text="jersey.team"></h3>
+                <span class="player-number text-lg md:text-xl" x-text="jersey.number"></span>
+              </div>
+              <p class="text-gray-600 mb-3 text-sm md:text-base" x-text="jersey.name"></p>
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-base md:text-lg">
+                  ₹<span x-text="jersey.price"></span>
+                </span>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jersey.availability === 'In Stock',
+                    'bg-yellow-500': jersey.availability === 'Low Stock',
+                    'bg-red-500': jersey.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jersey.availability"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Shipping Info Section -->
+    <div x-show="currentView === 'shipping-info'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Shipping Information</h1>
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h2 class="text-xl font-bold mb-4">Domestic Shipping</h2>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li><strong>Standard Shipping:</strong> 3-5 business days - ₹40</li>
+              <li><strong>Express Shipping:</strong> 1-2 business days - ₹80</li>
+              <li><strong>Overnight Shipping:</strong> Next business day - ₹120</li>
+              <li><strong>Free Shipping:</strong> Orders over ₹499</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold mb-4">International Shipping</h2>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li><strong>Standard International:</strong> 7-14 business days - ₹350</li>
+              <li><strong>Express International:</strong> 3-7 business days - ₹499</li>
+              <li><strong>Note:</strong> Additional customs fees may apply</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Returns & Exchanges Section -->
+    <div x-show="currentView === 'returns-exchanges'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Returns & Exchanges</h1>
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-xl font-bold mb-4">Return Policy</h2>
+            <p class="text-sm md:text-base mb-4">We want you to be completely satisfied with your purchase. If you're not happy with your jersey, you can return it within 30 days of purchase.</p>
+            <ul class="list-disc list-inside space-y-2 text-sm md:text-base">
+              <li>Items must be unworn and in original condition</li>
+              <li>All original tags must be attached</li>
+              <li>Original packaging required</li>
+              <li>Return shipping fees apply (₹40)</li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold mb-4">Exchange Policy</h2>
+            <p class="text-sm md:text-base mb-4">We offer free exchanges for size and color changes within 10 days of purchase.</p>
+            <ul class="list-disc list-inside space-y-2 text-sm md:text-base">
+              <li>Same item in different size or color</li>
+              <li>Items must be in original condition</li>
+              <li>We pay return shipping for exchanges</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Size Guide Section -->
+    <div x-show="currentView === 'size-guide'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Size Guide</h1>
+      <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-300 p-2 md:p-3 text-left text-sm md:text-base">Size</th>
+                <th class="border border-gray-300 p-2 md:p-3 text-left text-sm md:text-base">Chest (inches)</th>
+                <th class="border border-gray-300 p-2 md:p-3 text-left text-sm md:text-base">Length (inches)</th>
+                <th class="border border-gray-300 p-2 md:p-3 text-left text-sm md:text-base">Sleeve (inches)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">S</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">34-36</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">27</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">8</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">M</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">38-40</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">28</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">8.5</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">L</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">42-44</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">29</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">9</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">XL</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">46-48</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">30</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">9.5</td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">XXL</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">50-52</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">31</td>
+                <td class="border border-gray-300 p-2 md:p-3 text-sm md:text-base">10</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-6">
+          <h3 class="text-lg font-bold mb-3">Measuring Tips</h3>
+          <ul class="list-disc list-inside space-y-2 text-sm md:text-base">
+            <li>Measure chest at the fullest part</li>
+            <li>Keep measuring tape parallel to the floor</li>
+            <li>Don't pull the tape too tight</li>
+            <li>If between sizes, we recommend sizing up</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQs Section -->
+    <div x-show="currentView === 'faqs'" class="container mx-auto px-4 py-8">
+      <h1 class="text-2xl md:text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h1>
+      <div class="max-w-4xl mx-auto space-y-4">
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">What sizes do you offer?</h3>
+          <p class="text-gray-600 text-sm md:text-base">We offer sizes ranging from Small to XXL for most of our jerseys. Please check individual product pages for specific sizing availability.</p>
+        </div>
+
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">What is your return policy?</h3>
+          <p class="text-gray-600 text-sm md:text-base">We accept returns within 30 days of purchase for unworn items with original tags. Please contact our customer service team to initiate a return.</p>
+        </div>
+
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">How long does shipping take?</h3>
+          <p class="text-gray-600 text-sm md:text-base">Standard shipping typically takes 3-5 business days. Express shipping options are available at checkout for faster delivery.</p>
+        </div>
+
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">Are your jerseys authentic?</h3>
+          <p class="text-gray-600 text-sm md:text-base">Yes, all our jerseys are authentic licensed products featuring official team logos and designs. We only source from authorized manufacturers.</p>
+        </div>
+
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">Do you offer customization?</h3>
+          <p class="text-gray-600 text-sm md:text-base">Yes, we offer name and number customization for most jerseys. Contact us for details and pricing.</p>
+        </div>
+
+        <div class="bg-white p-4 md:p-6 rounded-lg shadow">
+          <h3 class="text-lg md:text-xl font-semibold mb-2">What payment methods do you accept?</h3>
+          <p class="text-gray-600 text-sm md:text-base">We accept all major credit cards, PayPal, and Apple Pay for your convenience.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-white py-8 md:py-12 mt-16" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-futbol text-xl md:text-2xl text-secondary-color mr-2" style="color: #ff6a3d;"></i>
+            <h2 class="text-lg md:text-xl font-bold">FootballFit</h2>
+          </div>
+          <p class="text-gray-400 mb-4 text-sm md:text-base">Premium football jerseys for true fans. Authentic quality and official merchandise.</p>
+          <div class="flex space-x-4">
+            <a href="https://github.com/MbappeNinja" target="_blank" class="text-gray-400 hover:text-secondary-color transition-colors" style="color: #ff6a3d;">
+              <i class="fab fa-github text-lg md:text-xl"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/prabircode/" target="_blank" class="text-gray-400 hover:text-secondary-color transition-colors" style="color: #ff6a3d;">
+              <i class="fab fa-linkedin text-lg md:text-xl"></i>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-base md:text-lg font-semibold mb-4">Shop</h3>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" @click="currentView = 'all-jerseys'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">All Jerseys</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'national-teams'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">National Teams</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'club-teams'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Club Teams</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'limited-editions'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Limited Editions</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'new-arrivals'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">New Arrivals</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-base md:text-lg font-semibold mb-4">Customer Service</h3>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" @click="currentView = 'contact'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Contact Us</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'shipping-info'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Shipping Info</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'returns-exchanges'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Returns & Exchanges</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'size-guide'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Size Guide</a></li>
+            <li><a href="javascript:void(0)" @click="currentView = 'faqs'; scrollToTop()" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">FAQs</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-base md:text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4 text-sm md:text-base">Subscribe for updates on new jerseys, exclusive offers and more.</p>
+          <form class="flex flex-col sm:flex-row gap-2">
+            <input type="email" placeholder="Your email" class="px-3 py-2 text-gray-800 rounded flex-1 text-sm md:text-base">
+            <button type="submit" class="bg-secondary-color text-white px-3 py-2 rounded hover:bg-opacity-90 text-sm md:text-base" style="background-color: #ff6a3d;">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-700 mt-6 md:mt-8 pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0 text-sm md:text-base">© 2025 FootballFit. All rights reserved.</p>
+        <div class="flex flex-wrap justify-center space-x-4 md:space-x-6">
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Privacy Policy</a>
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Terms of Service</a>
+          <a href="javascript:void(0)" class="text-gray-400 hover:text-white text-sm md:text-base transition-colors">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <button @click="scrollToTop()" class="scroll-to-top" :class="{'show': showScrollToTop}">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Jersey Detail Modal -->
+  <div class="modal-overlay" :class="{'show': isDetailOpen}" @click.self="isDetailOpen = false">
+    <div class="modal-content" x-show="jerseyDetail">
+      <div class="p-4 md:p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl md:text-2xl font-bold" x-text="jerseyDetail?.name"></h2>
+          <button @click="isDetailOpen = false" class="text-gray-500 hover:text-gray-800">
+            <i class="fas fa-times text-lg md:text-xl"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <!-- Image Gallery -->
+          <div>
+            <!-- Simple Slideshow for multiple images -->
+            <div x-show="jerseyDetail?.images?.length > 0" x-data="{ currentImageIndex: 0, isTransitioning: false }" class="relative slideshow-container">
+              <div class="relative overflow-hidden rounded-lg" style="height: 400px;">
+                <div class="flex transition-transform duration-500 ease-in-out h-full" 
+                     :style="`transform: translateX(-${currentImageIndex * 100}%)`">
+                  <template x-for="(img, index) in jerseyDetail?.images" :key="index">
+                    <div class="w-full h-full flex-shrink-0">
+                      <img :src="img" 
+                           :alt="jerseyDetail?.name + ' view ' + (index + 1)" 
+                           class="w-full h-full object-cover">
+                    </div>
+                  </template>
+                </div>
+              </div>
+              
+              <!-- Navigation arrows -->
+              <button @click="
+                if (!isTransitioning && jerseyDetail.images.length > 1) {
+                  isTransitioning = true;
+                  currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : jerseyDetail.images.length - 1;
+                  setTimeout(() => isTransitioning = false, 500);
+                }
+              " 
+                      class="slideshow-arrow absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-200 hover:scale-110 z-10"
+                      x-show="jerseyDetail.images.length > 1">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              
+              <button @click="
+                if (!isTransitioning && jerseyDetail.images.length > 1) {
+                  isTransitioning = true;
+                  currentImageIndex = currentImageIndex < jerseyDetail.images.length - 1 ? currentImageIndex + 1 : 0;
+                  setTimeout(() => isTransitioning = false, 500);
+                }
+              " 
+                      class="slideshow-arrow absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-200 hover:scale-110 z-10"
+                      x-show="jerseyDetail.images.length > 1">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+              
+              <!-- Pagination dots -->
+              <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10" x-show="jerseyDetail.images.length > 1">
+                <template x-for="(img, index) in jerseyDetail?.images" :key="index">
+                  <button @click="
+                    if (!isTransitioning) {
+                      isTransitioning = true;
+                      currentImageIndex = index;
+                      setTimeout(() => isTransitioning = false, 500);
+                    }
+                  " 
+                          class="slideshow-dot w-3 h-3 rounded-full transition-all duration-200 hover:scale-125" 
+                          :class="currentImageIndex === index ? 'bg-white shadow-lg' : 'bg-white bg-opacity-50 hover:bg-opacity-75'">
+                  </button>
+                </template>
+              </div>
+            </div>
+            
+            <!-- Fallback single image if no images array -->
+            <div x-show="!jerseyDetail?.images?.length" class="w-full">
+              <img :src="jerseyDetail?.image" :alt="jerseyDetail?.name" class="w-full h-400 object-cover rounded-lg shadow-lg">
+            </div>
+          </div>
+
+          <!-- Product Details -->
+          <div>
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 md:w-12 md:h-12 bg-contain bg-no-repeat bg-center mr-3" :style="`background-image: url('${jerseyDetail?.teamLogo}')`"></div>
+              <div>
+                <h3 class="team-name text-lg md:text-xl font-bold" x-text="jerseyDetail?.team"></h3>
+                <p class="text-sm text-gray-600" x-text="`#${jerseyDetail?.number}`"></p>
+                <div class="flex items-center">
+                  <span class="availability-dot mr-2" :class="{
+                    'bg-green-500': jerseyDetail?.availability === 'In Stock',
+                    'bg-yellow-500': jerseyDetail?.availability === 'Low Stock',
+                    'bg-red-500': jerseyDetail?.availability === 'Pre-Order'
+                  }"></span>
+                  <span class="text-xs md:text-sm" x-text="jerseyDetail?.availability"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-2xl md:text-3xl font-bold mb-4 text-primary-color" x-text="`₹${jerseyDetail?.price}`"></div>
+
+            <div class="mb-6">
+              <p class="text-gray-600 text-sm md:text-base" x-text="jerseyDetail?.description"></p>
+            </div>
+
+            <!-- Size Selection -->
+            <div class="mb-6">
+              <h4 class="font-semibold mb-2 text-sm md:text-base">Select Size</h4>
+              <div class="flex flex-wrap gap-2">
+                <template x-for="size in jerseyDetail?.sizes" :key="size">
+                  <button class="size-btn border border-gray-300 px-3 py-2 rounded-md hover:border-gray-500 text-sm md:text-base" 
+                    :class="{'active': selectedSize === size}"
+                    @click="selectedSize = size"
+                    x-text="size"
+                  ></button>
+                </template>
+              </div>
+              <p x-show="!selectedSize" class="text-xs md:text-sm text-red-500 mt-2">Please select a size</p>
+            </div>
+
+
+
+            <button 
+              @click="
+                if(selectedSize) {
+                  cart.push({
+                    id: jerseyDetail.id,
+                    name: jerseyDetail.name,
+                    number: jerseyDetail.number,
+                    price: jerseyDetail.price,
+                    size: selectedSize,
+                    quantity: 1,
+                    image: jerseyDetail.images[0]
+                  });
+                  isDetailOpen = false;
+                }
+              " 
+              class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center text-sm md:text-base" 
+              :class="{'opacity-60 cursor-not-allowed': !selectedSize}"
+            >
+              <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" :class="{'show': isCheckoutOpen}" @click.self="isCheckoutOpen = false">
+    <div class="modal-content" x-show="!isOrderConfirmed">
+      <div class="p-4 md:p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl md:text-2xl font-bold">Checkout</h2>
+          <button @click="isCheckoutOpen = false" class="text-gray-500 hover:text-gray-800">
+            <i class="fas fa-times text-lg md:text-xl"></i>
+          </button>
+        </div>
+
+        <form id="checkout-form" @submit.prevent="
+          // Simulate order processing
+          isOrderConfirmed = true;
+          orderNumber = 'ORD-' + Math.floor(Math.random() * 1000000);
+        ">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <!-- Billing & Shipping -->
+            <div>
+              <h3 class="text-lg md:text-xl font-semibold mb-4">Billing & Shipping</h3>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="firstName" class="text-sm md:text-base">First Name</label>
+                  <input type="text" id="firstName" required class="text-sm md:text-base">
+                </div>
+                <div>
+                  <label for="lastName" class="text-sm md:text-base">Last Name</label>
+                  <input type="text" id="lastName" required class="text-sm md:text-base">
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="email" class="text-sm md:text-base">Email</label>
+                <input type="email" id="email" required class="text-sm md:text-base">
+              </div>
+
+              <div class="mb-4">
+                <label for="phone" class="text-sm md:text-base">Phone</label>
+                <input type="tel" id="phone" required class="text-sm md:text-base">
+              </div>
+
+              <div class="mb-4">
+                <label for="address" class="text-sm md:text-base">Address</label>
+                <input type="text" id="address" required class="text-sm md:text-base">
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label for="city" class="text-sm md:text-base">City</label>
+                  <input type="text" id="city" required class="text-sm md:text-base">
+                </div>
+                <div>
+                  <label for="postalCode" class="text-sm md:text-base">Postal Code</label>
+                  <input type="text" id="postalCode" required class="text-sm md:text-base">
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="country" class="text-sm md:text-base">Country</label>
+                <select id="country" required class="text-sm md:text-base">
+                  <option value="">Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="AU">Australia</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Payment & Order Summary -->
+            <div>
+              <h3 class="text-lg md:text-xl font-semibold mb-4">Payment</h3>
+
+              <div class="mb-4">
+                <label for="cardName" class="text-sm md:text-base">Cardholder Name</label>
+                <input type="text" id="cardName" required class="text-sm md:text-base">
+              </div>
+
+              <div class="mb-4">
+                <label for="cardNumber" class="text-sm md:text-base">Card Number</label>
+                <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required class="text-sm md:text-base">
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label for="expiry" class="text-sm md:text-base">Expiry Date</label>
+                  <input type="text" id="expiry" placeholder="MM/YY" required class="text-sm md:text-base">
+                </div>
+                <div>
+                  <label for="cvv" class="text-sm md:text-base">CVV</label>
+                  <input type="text" id="cvv" placeholder="XXX" required class="text-sm md:text-base">
+                </div>
+              </div>
+
+              <div class="bg-gray-100 p-4 rounded mb-6">
+                <h4 class="font-semibold mb-3 text-sm md:text-base">Order Summary</h4>
+                <template x-for="(item, index) in cart" :key="index">
+                  <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                    <div class="flex items-center">
+                      <span class="text-xs md:text-sm" x-text="`${item.quantity}x `"></span>
+                      <span class="ml-2 text-xs md:text-sm" x-text="`${item.name} (${item.size})`"></span>
+                    </div>
+                    <span class="text-xs md:text-sm" x-text="`$${(item.price * item.quantity).toFixed(2)}`"></span>
+                  </div>
+                </template>
+
+                <div class="flex justify-between font-bold mt-4 text-sm md:text-base">
+                  <span>Total</span>
+                  <span x-text="`$${getCartTotal()}`"></span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center text-sm md:text-base">
+                Place Order
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Order Confirmation -->
+    <div class="modal-content max-w-lg" x-show="isOrderConfirmed">
+      <div class="p-6 md:p-8 text-center">
+        <div class="mb-6 text-green-500">
+          <i class="fas fa-check-circle text-5xl md:text-6xl"></i>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Thank You!</h2>
+        <p class="text-lg md:text-xl mb-2">Your order has been received</p>
+        <p class="text-gray-500 mb-6 text-sm md:text-base" x-text="`Order #: ${orderNumber}`"></p>
+
+        <p class="mb-8 text-sm md:text-base">We've sent a confirmation email with order details. Your jerseys will be on their way soon!</p>
+
+        <button @click="
+          isCheckoutOpen = false;
+          isOrderConfirmed = false;
+          cart = [];
+          currentView = 'shop';
+        " class="btn-primary px-6 md:px-8 py-3 rounded-lg font-semibold text-sm md:text-base">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is logged in
+    if (localStorage.getItem('fake_logged_in') === 'true') {
+      const name = localStorage.getItem('fake_user_name') || 'User';
+      // Example: Show a welcome message at the top
+      const welcome = document.createElement('div');
+      welcome.innerHTML = `Welcome, <b>${name}</b>! <a href="#" id="fakeLogout" style="color:red; margin-left:10px;">Logout</a>`;
+      welcome.style = "background:#e0ffe0;padding:10px;text-align:center;";
+      document.body.insertBefore(welcome, document.body.firstChild);
+
+      // Logout handler
+      document.getElementById('fakeLogout').onclick = function() {
+        localStorage.removeItem('fake_logged_in');
+        localStorage.removeItem('fake_user_name');
+        location.reload();
+      };
+    }
+  </script>
+
+</body>
+</html>
